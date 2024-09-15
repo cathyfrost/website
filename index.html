@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>王语桐的个人网站</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+  <style>
+    /* 样式：桌宠容器和图片 */
+    #pet-container {
+      position: absolute;
+      top: 100px;
+      right: 20px;
+      width: 150px;
+      height: 150px;
+      cursor: pointer;
+      z-index: 1000;
+    }
+
+    #pet {
+      width: 100%;
+      height: 100%;
+      /* user-select: none; 禁止选中文本 */
+    }
+
+    /* 额外的桌宠拖动样式 */
+    .dragging {
+      transition: none;
+    }
+
+    /* 自定义鼠标光标图片跟随 */
+    .cursor-trail {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background-image: url('assets/3.png'); /* 替换成你的图片路径 */
+      background-size: cover;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+    }
+    
+    /* 禁用默认鼠标指针 */
+    body, html {
+      cursor: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="app" class="content">
+    <header>
+      <h1 data-aos="fade-down">{{ name }}的个人网站</h1>
+      <nav>
+        <ul>
+          <li><a href="#about" data-aos="fade-up">关于我</a></li>
+          <li><a href="#education" data-aos="fade-up">教育背景</a></li>
+          <li><a href="#skills" data-aos="fade-up">技能</a></li>
+          <li><a href="#contact-info" data-aos="fade-up">联系方式</a></li>
+          <li><a href="#contact" data-aos="fade-up">联系我</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section id="about" class="section" data-aos="fade-right">
+      <h2>关于我</h2>
+      <p>{{ about }}</p>
+    </section>
+
+    <section id="education" class="section" data-aos="fade-left">
+      <h2>教育背景</h2>
+      <ul>
+        <li><strong>学校:</strong> {{ school }}</li>
+        <li><strong>学号:</strong> {{ studentId }}</li>
+        <li><strong>专业:</strong> {{ major }}</li>
+        <li><strong>年级:</strong> {{ grade }}</li>
+      </ul>
+    </section>
+
+    <section id="skills" class="section" data-aos="fade-right">
+      <h2>技能</h2>
+      <ul>
+        <li v-for="skill in skills" :key="skill">{{ skill }}</li>
+      </ul>
+    </section>
+
+    <!-- 新的联系方式部分 -->
+    <section id="contact-info" class="section" data-aos="fade-left">
+      <h2>联系方式</h2>
+      <ul>
+        <li><strong>QQ:</strong> {{ qq }}</li>
+        <li><strong>微信:</strong> {{ wechat }}</li>
+        <li><strong>手机号:</strong> {{ phone }}</li>
+      </ul>
+      <h3>代码仓库</h3>
+      <ul>
+        <li><a :href="github" target="_blank" class="btn-glow">GitHub</a></li>
+        <li><a :href="gitee" target="_blank" class="btn-glow">Gitee</a></li>
+      </ul>
+    </section>
+
+    <section id="contact" class="section" data-aos="fade-right">
+      <h2>联系我</h2>
+      <form @submit.prevent="submitForm">
+        <label for="name">您的姓名:</label>
+        <input
+          type="text"
+          id="name"
+          v-model="formData.name"
+          required
+          placeholder="请输入您的姓名"
+          title="请输入您的全名"
+        />
+
+        <label for="email">您的邮箱:</label>
+        <input
+          type="email"
+          id="email"
+          v-model="formData.email"
+          required
+          placeholder="请输入您的邮箱"
+          title="请输入有效的电子邮件地址"
+        />
+
+        <label for="message">留言:</label>
+        <textarea
+          id="message"
+          v-model="formData.message"
+          required
+          placeholder="请输入您的留言"
+          title="请输入您想发送的消息"
+        ></textarea>
+
+        <button type="submit" class="btn-glow">提交</button>
+      </form>
+
+      <div v-if="submitted">
+        <p>谢谢您，{{ formData.name }}！您的留言已发送。</p>
+      </div>
+    </section>
+
+    <!-- 桌宠容器 -->
+    <div id="pet-container">
+      <img id="pet" src="assets/2.gif" alt="桌宠" />
+    </div>
+
+    <!-- 光标图片跟随 -->
+    <div id="cursor-trail" class="cursor-trail"></div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <script src="app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script src="particles-config.js"></script>
+  <script>
+    AOS.init(); // 启动滚动动画
+
+    // 光标图片跟随效果
+    const cursorTrail = document.getElementById('cursor-trail');
+    document.addEventListener('mousemove', (e) => {
+      cursorTrail.style.left = e.pageX + 'px';
+      cursorTrail.style.top = e.pageY + 'px';
+    });
+  </script>
+</body>
+</html>
